@@ -93,8 +93,8 @@ def loopTree(sample, isMC):
     if(isMC):
         friendTree = tree.GetFriend(friendTreeName)
 
-#    for ev in range(tree.GetEntries()):
-    for ev in range(1,100):
+    for ev in range(tree.GetEntries()):
+#    for ev in range(1,100):
         if (tree.GetEntry(ev) <= 0):
             raise Exception('TTree::GetEntry() failed')
 
