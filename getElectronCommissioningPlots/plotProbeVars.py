@@ -12,13 +12,15 @@ from setTDRStyle import setTDRStyle
 
 #treename = 'GsfElectronToSC/fitter_tree'
 #treename = 'GsfElectronToPhoID/fitter_tree'
-treename = 'GsfElectronToEleID/fitter_tree'
+#treename = 'GsfElectronToEleID/fitter_tree'
+treename = 'tnpEleIDs/fitter_tree'
 
 #gROOT.ProcessLine('.L CMS_lumi.C+')
 
 
 CMS_lumi.extraText = "Preliminary"
-CMS_lumi.lumi_sqrtS = "1 fb^{-1} (13 TeV)" 
+#CMS_lumi.lumi_sqrtS = "1 fb^{-1} (13 TeV)" 
+CMS_lumi.lumi_sqrtS = "35.9 fb^{-1} (13 TeV)" 
 iPos = 11
 iPeriod = 0
 
@@ -44,13 +46,13 @@ def loopTree(sample, isMC):
 #    region = ['EB','EE','all']
     region = ['EB','EE']
 
-    histList['probe_sc_eta'] = rt.TH1F('probe_sc_eta','SC #eta',100,-2.5,2.5)
-    histList['probe_sc_eta'].Sumw2()
+    histList['el_sc_eta'] = rt.TH1F('el_sc_eta','SC #eta',100,-2.5,2.5)
+    histList['el_sc_eta'].Sumw2()
     #b="this is %sand%s" %(a,c) 
     for reg in region:
         
-        histList['probe_Ele_chIso_%s' %(reg)] = rt.TH1F('probe_Ele_chIso_%s' %(reg),'Charged isolation',20,0,5)
-        histList['probe_Ele_chIso_%s' %(reg)].Sumw2()
+        histList['el_chIso_%s' %(reg)] = rt.TH1F('el_chIso_%s' %(reg),'Charged isolation',20,0,5)
+        histList['el_chIso_%s' %(reg)].Sumw2()
 
         nbins=100
         xmin=0.005
@@ -61,34 +63,38 @@ def loopTree(sample, isMC):
             xmin=0.015
             xmax=0.035
                     
-        histList['probe_Ele_sieie_%s' %(reg)] = rt.TH1F('probe_Ele_sieie_%s' %(reg),'#sigma(i#etai#eta)',nbins,xmin,xmax)
-        histList['probe_Ele_sieie_%s' %(reg)].Sumw2()
+        histList['el_sieie_%s' %(reg)] = rt.TH1F('el_sieie_%s' %(reg),'#sigma(i#etai#eta)',nbins,xmin,xmax)
+        histList['el_sieie_%s' %(reg)].Sumw2()
         
-        histList['probe_Ele_neuIso_%s' %(reg)] = rt.TH1F('probe_Ele_neuIso_%s' %(reg),'Neutral hadron isolation',20,0,5)
-        histList['probe_Ele_neuIso_%s' %(reg)].Sumw2()
+        histList['el_neuIso_%s' %(reg)] = rt.TH1F('el_neuIso_%s' %(reg),'Neutral hadron isolation',20,0,5)
+        histList['el_neuIso_%s' %(reg)].Sumw2()
         
-        histList['probe_Ele_phoIso_%s' %(reg)] = rt.TH1F('probe_Ele_phoIso_%s' %(reg),'Photon isolation',20,0,5)
-        histList['probe_Ele_phoIso_%s' %(reg)].Sumw2()
+        histList['el_phoIso_%s' %(reg)] = rt.TH1F('el_phoIso_%s' %(reg),'Photon isolation',20,0,5)
+        histList['el_phoIso_%s' %(reg)].Sumw2()
         
-        histList['probe_Ele_dEtaIn_%s' %(reg)] = rt.TH1F('probe_Ele_dEtaIn_%s' %(reg),'#Delta#eta_{in}',50,-0.04,0.04)
-        histList['probe_Ele_dEtaIn_%s' %(reg)].Sumw2()
+        histList['el_dEtaIn_%s' %(reg)] = rt.TH1F('el_dEtaIn_%s' %(reg),'#Delta#eta_{in}',50,-0.04,0.04)
+        histList['el_dEtaIn_%s' %(reg)].Sumw2()
         
-        histList['probe_Ele_dPhiIn_%s' %(reg)] = rt.TH1F('probe_Ele_dPhiIn_%s' %(reg),'#Delta#eta_{in}',50,-0.2,0.2)
-        histList['probe_Ele_dPhiIn_%s' %(reg)].Sumw2()
+        histList['el_dPhiIn_%s' %(reg)] = rt.TH1F('el_dPhiIn_%s' %(reg),'#Delta#eta_{in}',50,-0.2,0.2)
+        histList['el_dPhiIn_%s' %(reg)].Sumw2()
         
-        histList['probe_Ele_et_%s' %(reg)] = rt.TH1F('probe_Ele_et_%s' %(reg),'E_{T}',50,0,100)
-        histList['probe_Ele_et_%s' %(reg)].Sumw2()
+        histList['el_et_%s' %(reg)] = rt.TH1F('el_et_%s' %(reg),'E_{T}',50,0,100)
+        histList['el_et_%s' %(reg)].Sumw2()
+
+        histList['pair_mass_%s' %(reg)] = rt.TH1F('pair_mass_%s' %(reg),'Di-lepton invariant mass',40,80,100)
+        histList['pair_mass_%s' %(reg)].Sumw2()
 
         ######xTitles
-        xTitle['probe_Ele_chIso_%s' %(reg)] = 'Charged Hadron Isolation [GeV] (%s)' %(reg)
-        xTitle['probe_Ele_sieie_%s' %(reg)] = '#sigma_{i#eta i#eta} (%s)' %(reg)
-        xTitle['probe_Ele_neuIso_%s' %(reg)] = 'Neutral Hadron Isolation [GeV] (%s)' %(reg)
-        xTitle['probe_Ele_phoIso_%s' %(reg)] = 'Photon Isolation [GeV] (%s)' %(reg)
-        xTitle['probe_Ele_dEtaIn_%s' %(reg)] = '#Delta#eta_{in} (%s)' %(reg)
-        xTitle['probe_Ele_dPhiIn_%s' %(reg)] = '#Delta#phi_{in} (%s)' %(reg)
-        xTitle['probe_Ele_et_%s' %(reg)] = 'Probe E_{T} [GeV] (%s)' %(reg)
+        xTitle['el_chIso_%s' %(reg)] = 'Charged Hadron Isolation [GeV] (%s)' %(reg)
+        xTitle['el_sieie_%s' %(reg)] = '#sigma_{i#eta i#eta} (%s)' %(reg)
+        xTitle['el_neuIso_%s' %(reg)] = 'Neutral Hadron Isolation [GeV] (%s)' %(reg)
+        xTitle['el_phoIso_%s' %(reg)] = 'Photon Isolation [GeV] (%s)' %(reg)
+        xTitle['el_dEtaIn_%s' %(reg)] = '#Delta#eta_{in} (%s)' %(reg)
+        xTitle['el_dPhiIn_%s' %(reg)] = '#Delta#phi_{in} (%s)' %(reg)
+        xTitle['el_et_%s' %(reg)] = 'Probe E_{T} [GeV] (%s)' %(reg)
+        xTitle['pair_mass_%s' %(reg)] = 'M_{ee} [GeV] (%s)' %(reg)
         
-    xTitle['probe_sc_eta'] = 'Probe #eta_{sc}' 
+    xTitle['el_sc_eta'] = 'Probe #eta_{sc}' 
 
     if(isMC):
         friendTree = tree.GetFriend(friendTreeName)
@@ -101,49 +107,53 @@ def loopTree(sample, isMC):
         tag_Ele_pt          = tree.tag_Ele_pt
         tag_sc_abseta       = tree.tag_sc_abseta
         pair_mass           = tree.pair_mass
-        probe_Ele_neuIso    = tree.probe_Ele_neuIso
-        probe_Ele_phoIso    = tree.probe_Ele_phoIso
-        probe_Ele_chIso     = tree.probe_Ele_chIso
-        probe_Ele_pt        = tree.probe_Ele_pt
-        probe_Ele_sieie     = tree.probe_Ele_sieie
-        probe_Ele_dEtaIn    = tree.probe_Ele_dEtaIn
-        probe_Ele_dPhiIn    = tree.probe_Ele_dPhiIn
-        probe_Ele_et        = tree.probe_Ele_et
-        probe_sc_eta        = tree.probe_sc_eta
-        probe_sc_abseta     = tree.probe_sc_eta
+        el_neuIso    = tree.el_neuIso
+        el_phoIso    = tree.el_phoIso
+        el_chIso     = tree.el_chIso
+        el_pt        = tree.el_pt
+        el_sieie     = tree.el_sieie
+        el_dEtaIn    = tree.el_dEtaIn
+        el_dPhiIn    = tree.el_dPhiIn
+        el_et        = tree.el_et
+        el_sc_eta        = tree.el_sc_eta
+        el_sc_abseta     = tree.el_sc_eta
         passingLoose80X     = tree.passingLoose80X
 
+        
+        
         ###PUweight:totWeight
         totWeight = 1
 
 
         if isMC==1:
-            totWeight        = friendTree.totWeight
+            #totWeight        = friendTree.totWeight
+            totWeight        = tree.totWeight
             
 #        print 'totweight is ',totWeight
 
-        combinedProbeIso   = (probe_Ele_neuIso+probe_Ele_phoIso+probe_Ele_chIso)/probe_Ele_pt
+        combinedProbeIso   = (el_neuIso+el_phoIso+el_chIso)/el_pt
 
 #        print "tag pt : mass : combinedIso ", tag_Ele_pt, " ",pair_mass, " ", combinedTagIso
         
-        if not (tag_Ele_pt > 30 and tag_sc_abseta<2.1 and pair_mass>80 and pair_mass<100 and combinedProbeIso<0.1 and passingLoose80X==1 and probe_sc_abseta<2.5 and probe_Ele_et>20):
+        if not (tag_Ele_pt > 30 and tag_sc_abseta<2.1 and pair_mass>80 and pair_mass<100 and combinedProbeIso<0.1 and passingLoose80X==1 and el_sc_abseta<2.5 and el_et>20):
             continue
         
         #print "Selected the event "
 
         reg = 'EB'
 
-        if(probe_sc_abseta > 1.479):
+        if(el_sc_abseta > 1.479):
             reg = 'EE'
             
-        histList['probe_sc_eta'].Fill(probe_sc_eta,totWeight)
-        histList['probe_Ele_et_%s' %(reg)].Fill(probe_Ele_et,totWeight)
-        histList['probe_Ele_sieie_%s' %(reg)].Fill(probe_Ele_sieie,totWeight)
-        histList['probe_Ele_chIso_%s' %(reg)].Fill(probe_Ele_chIso,totWeight)
-        histList['probe_Ele_neuIso_%s' %(reg)].Fill(probe_Ele_neuIso,totWeight)
-        histList['probe_Ele_phoIso_%s' %(reg)].Fill(probe_Ele_phoIso,totWeight)
-        histList['probe_Ele_dEtaIn_%s' %(reg)].Fill(probe_Ele_dEtaIn,totWeight)
-        histList['probe_Ele_dPhiIn_%s' %(reg)].Fill(probe_Ele_dPhiIn,totWeight)
+        histList['el_sc_eta'].Fill(el_sc_eta,totWeight)
+        histList['el_et_%s' %(reg)].Fill(el_et,totWeight)
+        histList['el_sieie_%s' %(reg)].Fill(el_sieie,totWeight)
+        histList['el_chIso_%s' %(reg)].Fill(el_chIso,totWeight)
+        histList['el_neuIso_%s' %(reg)].Fill(el_neuIso,totWeight)
+        histList['el_phoIso_%s' %(reg)].Fill(el_phoIso,totWeight)
+        histList['el_dEtaIn_%s' %(reg)].Fill(el_dEtaIn,totWeight)
+        histList['el_dPhiIn_%s' %(reg)].Fill(el_dPhiIn,totWeight)
+        histList['pair_mass_%s' %(reg)].Fill(pair_mass,totWeight)
 
     for key in histList:
         print "key ,  integral ",key, histList[key].Integral()
@@ -248,27 +258,36 @@ dataSamples = {
 #    'runB'   :  tnpSamples.Moriond17_80X['data_Run2016B'].clone(),
 #    'runC'   :  tnpSamples.Moriond17_80X['data_Run2016C'].clone(),
 #    'runD'   :  tnpSamples.Moriond17_80X['data_Run2016D'].clone(),
-    'runBCD'  :  tnpSamples.Moriond17_80X['data_Run2016B'].clone(),
+#    'runBCD'  :  tnpSamples.Moriond17_80X['data_Run2016B'].clone(),
+#    'runAll'  :  tnpSamples.Remini17_80X['data_Run2016All'].clone(),
+    'runBCD'  :  tnpSamples.Remini17_80X['data_Run2016B'].clone(),
 }
 
 mcSamples = {
-    'runBCD'  : tnpSamples.Moriond17_80X['DY_madgraph'  ].clone(),  
+    #'runBCD'  : tnpSamples.Moriond17_80X['DY_madgraph'  ].clone(),  
+    #'runAll'  : tnpSamples.Remini17_80X['DY_madgraph'  ].clone(),  
+    'runBCD'  : tnpSamples.Remini17_80X['DY_madgraph'  ].clone(),  
 
 }
 
+#dataSamples['runBCD'].add_sample(tnpSamples.Moriond17_80X['data_Run2016C'])
+#dataSamples['runBCD'].add_sample(tnpSamples.Moriond17_80X['data_Run2016D'])
 ########data
 #dataSamples['runBCD'].add_sample(tnpSamples.Moriond17_80X['data_Run2016C'])
 #dataSamples['runBCD'].add_sample(tnpSamples.Moriond17_80X['data_Run2016D'])
 #########data
-
-#mcSamples['runBCD'].set_puTree('eos/cms/store/group/phys_egamma/tnp/80X/pu/DY_madgraph_MCWinter17_rec_rec.pu.puTree.root')
-
 mcSamples['runBCD'].set_puTree('root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/tnp/80X/pu/DY_madgraph_MCWinter17_rec_rec.pu.puTree.root')
 mcSamples['runBCD'].set_weight('weights_2016_runBCD.totWeight')
+
+#mcSamples['runAll'].set_puTree('root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/tnp/80X/pu/DY_madgraph_MCWinter17_rec_rec.pu.puTree.root')
+#mcSamples['runAll'].set_weight('weights_2016_runBCD.totWeight')
+
 #mcSamples['runEF' ].set_weight('weights_2016_runEF.totWeight' )
 
 
+
 epochs = [ 'runBCD' ]
+#epochs = [ 'runAll' ]
 
 
 for epoch in  epochs:
