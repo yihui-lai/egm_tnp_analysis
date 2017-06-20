@@ -1,10 +1,27 @@
 from libPython.tnpClassUtils import tnpSample
 
 ### qll stat
-eosDir1 = 'eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/v1/'
-eosDir2 = 'eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/v2/'
-eosDirREC = 'eos/cms/store/group/phys_egamma/tnp/80X/RecoSF/RECOSFs_2016/'
-eosWinter17 = 'eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/Moriond17_v1/'
+eosDir1         = '/eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/v1/'
+eosDir2         = '/eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/v2/'
+eosDirREC       = '/eos/cms/store/group/phys_egamma/tnp/80X/RecoSF/RECOSFs_2016/'
+eosWinter17     = '/eos/cms/store/group/phys_egamma/tnp/80X/PhoEleIDs/Moriond17_v1/'
+eosLegacy80X_v1 = '/eos/cms//store/group/phys_egamma/tnp/80X/PhoEleIDs/Moriond17_GainSwitch_regr80X_scalesSmearing/'
+
+Legacy2016_v1_80X = {
+    'DY_madgraph_Winter17' : tnpSample('DY_madgraph_Winter17',
+                                       eosLegacy80X_v1 + 'mc/TnPTree_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_DYToLL_madgraph_Moriond17.root',
+                                       isMC = True, nEvts = 48243566 ),
+    
+    'data_Run2016B' : tnpSample('data_Run2016B' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunB.root' , lumi = 5.767 ),
+    'data_Run2016C' : tnpSample('data_Run2016C' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunC.root' , lumi = 2.646 ),
+    'data_Run2016D' : tnpSample('data_Run2016D' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunD.root' , lumi = 4.353 ),
+    'data_Run2016E' : tnpSample('data_Run2016E' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunE.root' , lumi = 3.985 ),
+    'data_Run2016F' : tnpSample('data_Run2016F' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunF.root' , lumi = 3.160 ),
+    'data_Run2016G' : tnpSample('data_Run2016G' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016rereco_RunG.root' , lumi = 7.539 ),
+    'data_Run2016H' : tnpSample('data_Run2016H' , eosLegacy80X_v1 + 'data/TnPTree_SingleElectron_2016prompt_RunH.root' , lumi = 8.762 ),
+}
+
+
 Moriond17_80X = {
     ### MiniAOD TnP for IDs scale factors
     'DY_madgraph'          : tnpSample('DY_madgraph',
