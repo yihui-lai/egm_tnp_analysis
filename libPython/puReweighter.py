@@ -245,6 +245,15 @@ puDataEpoch = {
     '2016_runGH' : puDirEOS + 'pu_dist_runGH_692.root',
     '2016_run2016' : puDirEOS + 'pu_dist_run2016_692.root',
     }
+#puDataEpoch = {
+#    '2017_runB' : puDirEOS + 'pileup_2017_RUNB.root',
+#    '2017_runC' : puDirEOS + 'pileup_2017_RUNC.root',
+#    '2017_runD'  : puDirEOS +'pileup_2017_RUND.root' ,
+#    '2017_runE'  : puDirEOS +'pileup_2017_RUNE.root' ,
+#    '2017_runF' : puDirEOS + 'pileup_2017_RUNF.root',
+#    '2017_runBCDEF' : puDirEOS + 'pileup_2017_41fb.root',
+#    }
+
 '''
 puDataEpoch = {
     '2018_runA' : puDirEOS + 'pileup_2018_RunA.root',
@@ -340,8 +349,8 @@ def reweight( sample, puType = 0,useCustomW=False  ):
         weights[pu] = []
 
     mcEvts = tree2array( tmc, branches = ['weight','truePU','event_nPV','rho'] )
-
-
+    mcEvts = mcEvts[60000000:]
+    aname = '3'
     pumc = puMC[puMCscenario]
     if   puType == 1:  pumc = puMCnVtx
     elif puType == 2:  pumc = puMCrho
@@ -389,7 +398,7 @@ def reweight( sample, puType = 0,useCustomW=False  ):
 #    print "====================="
 #    print weights[pu]
 
-    newFile    = rt.TFile( sample.puTree, 'recreate')
+    newFile    = rt.TFile( sample.puTree.replace(".root",aname+".root"), 'recreate')
 
     for pu in epochKeys:
         treeWeight = rt.TTree('weights_%s'%pu,'tree with weights')

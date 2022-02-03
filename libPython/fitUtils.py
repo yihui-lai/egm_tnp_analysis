@@ -33,6 +33,7 @@ def createWorkspaceForAltSig( sample, tnpBin, tnpWorkspaceParam ):
                 for ir in listToRM :
                     print '**** remove', ir
                     tnpWorkspaceParam.remove(ir)                    
+            #tnpWorkspaceParam.append( 'tailLeft[1]' )
             tnpWorkspaceParam.append( 'tailLeft[-1]' )
 
     if sample.isMC:
@@ -146,6 +147,15 @@ def histFitterAltSig( sample, tnpBin, tnpWorkspaceParam, isaddGaus=0 ):
         "RooCMSShape::bkgPass(x, acmsP, betaP, gammaP, peakP)",
         "RooCMSShape::bkgFail(x, acmsF, betaF, gammaF, peakF)",
         ]
+
+#    tnpWorkspaceFunc = [
+#        "tailLeft[1]",
+#        "RooCBShape::sigResPass(x,meanP,sigmaP,alphaP,nP)",
+#        "RooCBShape::sigResFail(x,meanF,sigmaF,alphaF,nF)",
+#        "RooCMSShape::bkgPass(x, acmsP, betaP, gammaP, peakP)",
+#        "RooCMSShape::bkgFail(x, acmsF, betaF, gammaF, peakF)",
+#        ]
+
     if isaddGaus==1:
         tnpWorkspaceFunc += [ "Gaussian::sigGaussFail(x,meanGF,sigmaGF)", ]
         if sample.isMC:
@@ -154,7 +164,7 @@ def histFitterAltSig( sample, tnpBin, tnpWorkspaceParam, isaddGaus=0 ):
     tnpWorkspace = []
     tnpWorkspace.extend(tnpWorkspacePar)
     tnpWorkspace.extend(tnpWorkspaceFunc)
-        
+
     ## init fitter
     infile = rt.TFile( sample.histFile, "read")
     hP = infile.Get('%s_Pass' % tnpBin['name'] )
@@ -182,7 +192,6 @@ def histFitterAltSig( sample, tnpBin, tnpWorkspaceParam, isaddGaus=0 ):
     for iw in tnpWorkspace:
         workspace.push_back(iw)
     fitter.setWorkspace( workspace, isaddGaus )
-
     title = tnpBin['title'].replace(';',' - ')
     title = title.replace('probe_sc_eta','#eta_{SC}')
     title = title.replace('probe_Ele_pt','p_{T}')

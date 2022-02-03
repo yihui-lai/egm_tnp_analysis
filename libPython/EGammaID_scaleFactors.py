@@ -27,11 +27,12 @@ def isFloat( myFloat ):
         return False
 
 
-
-graphColors = [rt.kBlack, rt.kGray+1, rt.kRed +1, rt.kRed-2, rt.kAzure+2, rt.kAzure-1, 
+#Yihui
+graphColors = [ 
+               rt.kBlack, rt.kGray+1, rt.kRed +1, rt.kRed-2, rt.kAzure+2, rt.kAzure-1, 
                rt.kSpring-1, rt.kYellow -2 , rt.kYellow+1,
                rt.kBlack, rt.kBlack, rt.kBlack, 
-               rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack ]
+               rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack, rt.kBlack,rt.kBlack,rt.kBlack ,rt.kBlack,rt.kBlack,rt.kBlack,rt.kBlack,rt.kBlack,rt.kBlack]
 
 
 
@@ -193,7 +194,6 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
         elif 'vtx' in yAxis or 'Vtx' in yAxis or 'PV' in yAxis:
             leg.AddEntry( grBinsEffData, '%3.0f #leq nVtx #leq  %3.0f'      % (float(key[0]),float(key[1])), "PL")        
 
-        
     for igr in range(len(listOfTGraph1)+1):
 
         option = "P"
@@ -203,7 +203,6 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
         use_igr = igr
         if use_igr == len(listOfTGraph1):
             use_igr = 0
-            
         listOfTGraph1[use_igr].SetLineColor(graphColors[use_igr])
         listOfTGraph1[use_igr].SetMarkerColor(graphColors[use_igr])
         if not listOfMC[use_igr] is None:
@@ -243,7 +242,8 @@ def EffiGraph1D(effDataList, effMCList, sfList ,nameout, xAxis = 'pT', yAxis = '
 
     c.Print(nameout)
     listName = nameout.split('/')
-    for iext in ["pdf","C","png"]:
+    for iext in ["pdf","root","png"]:
+    #for iext in ["pdf","C","png"]:
         c.SaveAs(nameout.replace('egammaEffi.txt_egammaPlots',listName[-6].replace('tnp','')+'_SFvs'+xAxis+'_'+listName[-3]).replace('pdf',iext))
 
     return listOfTGraph2
@@ -320,22 +320,22 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     effGraph.combineSyst()
 
     print " ------------------------------- "
-
+    # Yihui
     customEtaBining = []
     customEtaBining.append( (0.000,0.800))
     customEtaBining.append( (0.800,1.444))
-#    customEtaBining.append( (1.444,1.566))
+    customEtaBining.append( (1.444,1.566))
     customEtaBining.append( (1.566,2.000))
-    customEtaBining.append( (2.000,2.500))
-
+    customEtaBining.append( (2.000,2.200))
+    customEtaBining.append( (2.200,2.500))
 
     pdfout = nameOutBase + '_egammaPlots.pdf'
     cDummy = rt.TCanvas()
     cDummy.Print( pdfout + "[" )
 
-
+    #pt_1DGraph_list_customEtaBining(self, etaBining, doScaleFactor):
     EffiGraph1D( effGraph.pt_1DGraph_list_customEtaBining(customEtaBining, False ) , #eff Data
-                 None, 
+                 effGraph.pt_1DGraph_list_customEtaBining(customEtaBining, False,typeGR = -1 ), # eff MC
                  effGraph.pt_1DGraph_list_customEtaBining(customEtaBining, True ) , #SF
                  pdfout,
                  xAxis = axis[0], yAxis = axis[1] )
@@ -373,13 +373,16 @@ def doEGM_SFs(filein, lumi, axis = ['pT','eta'] ):
     dmin = 1.0 - h2SF.GetMinimum()
     dmax = h2SF.GetMaximum() - 1.0
     dall = max(dmin,dmax)
+    dall = 0.1 #Yihui hack
     h2SF.SetMinimum(1-dall)
     h2SF.SetMaximum(1+dall)
+    #h2SF.GetYaxis().SetRangeUser(32,500)
     h2SF.DrawCopy("colz TEXT45")
     
     c2D.cd(2)
     h2Error.SetMinimum(0)
-    h2Error.SetMaximum(min(h2Error.GetMaximum(),0.2))    
+    h2Error.SetMaximum(min(h2Error.GetMaximum(),0.05))    
+    #h2Error.GetYaxis().SetRangeUser(32,500)
     h2Error.DrawCopy("colz TEXT45")
 
     c2D.Print( pdfout )
